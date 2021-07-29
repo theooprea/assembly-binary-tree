@@ -1,0 +1,44 @@
+Abstract Syntax Tree by Theodor-Alin Oprea 324CC
+time to implement - aprox 30 hours
+
+The program takes an input string with a mathematical expression in the Polish
+prefixed form and creates a binary tree, with each node containing a pointer to
+a string, the data of the node, a left node pointer and a right node pointer.
+The program also implements the atoi function, used in the actual processing of
+the tree expresion. This ast form is mainly used by compilers to evaluate
+mathematical expressions.
+
+The create tree function is used to initialize the root node, by applying
+strtok only once, putting the data in the node and initialize it's sons with 0.
+The nodes are allocated as 12 bytes using malloc, first 4 for the data string
+pointer, the next 4 for the left node pointer and the last 4 for the right son
+pointer. After the initialization of the root node we call the create_tree_
+recursiv function, a recursive function used to create the tree using the root
+node and the input string.
+
+Create_tree_recursiv guides itself by the following logic: we check if the
+current node is null, if it is, we return from the function. If the node isn't
+null, we check if the data in it is null (the only case it isn't is the first
+root call), if it is null, we apply strtok once on null with delim as
+delimitators, copy the result in a dinamically allocated string and add the
+data in the data pointer of the current node. After the data insertion, we
+check if the data is a sign, +, -, * or /. If it is we create 2 new nodes,
+initialized with all 3 pointers, data, left and right as null, 0, and insert
+these 2 new nodes into the current node's left and right pointers. After the
+node insertion we make 2 recursive calls, the first using the left child og the
+current node and the second using the right child.
+
+Iocla_atoi simulates the behaviour of the atoi function. We firstly check if
+the first character of the string is '-', if it is we set the negative variable
+to true (1). Next we iterate through the input string, subtracting the ASCII
+value of '0' from each character and adding each into a sum, to gen the decimal
+representation of the string number in modulo. At the end of the function we
+check to see if the number was considered as negative, using the negative
+variable. If the variable is set on true, we subtract the number from 0 to get
+the exact opposite of the number, it's negative, if the variable is set on
+false, we return the already computed value in eax.
+
+I had to account for saving and restoring the ebx value in the create_tree
+function as to not interfere with the computations in the other checker
+functions as well as save registers on stack and pop them back to initial
+values after function calls.
